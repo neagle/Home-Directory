@@ -2,9 +2,12 @@ TARGETDIR=$(HOME)
 HERE=$(shell pwd)
 SRC=$(HERE)/src
 BUILD=$(HERE)/build
-FILES=.vimrc .bashrc
+FILES=.vimrc .bashrc .gitconfig .gitignore
+PACKAGES=git+http://github.com/kevinw/pyflakes.git ipython simplejson
 
-all: $(TARGETDIR)/$(FILES)
+all: bash-config python-env
+
+bash-config: $(TARGETDIR)/$(FILES)
 
 $(BUILD):
 	@echo Creating build directory...
@@ -39,6 +42,16 @@ $(TARGETDIR)/$(FILES): $(TARGETDIR)
 		fi \
 	fi
 
+python-env: $(TARGETDIR)/bin/python pythonpackages
+
+$(BUILD)/virtualenv.py: | $(BUILD)
+	@cd $(BUILD); wget http://bitbucket.org/ianb/virtualenv/raw/8dd7663d9811/virtualenv.py
+
+$(TARGETDIR)/bin/python: $(BUILD)/virtualenv.py
+	@python $(BUILD)/virtualenv.py $(TARGETDIR)
+
+pythonpackages: $(TARGETDIR)/bin/python
+	@$(TARGETDIR)/bin/pip install $(PACKAGES)
 
 clean:
 	rm -rf $(BUILD) 

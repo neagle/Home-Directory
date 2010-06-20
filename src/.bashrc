@@ -25,3 +25,7 @@ fi
 PATH=$PATH:/home/nateeagle/pombs.com/pombs
 
 export PYTHONPATH=$PYTHONPATH:/home/nateeagle/lib/python
+
+# Activate Python virtual-env
+VIRTUAL_ENV_DISABLE_PROMPT=1
+source ~/bin/activate
